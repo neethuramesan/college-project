@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    #bg{
+        background-repeat:no-repeat;
+        background-size:cover;
+    }
+    th,tr{
+        background-color:white;
+        width:300px;
+        height:40px;
+    }
+    table{
+        width:500px;
+    }
+</style>
+<body id="bg" style="background-image:url('{% static "images/edit2.jpg" %}')";>
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+        <a class="navbar-brand" href="#">Western Maryland College</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            
+            <li class="nav-item ">
+              <a class="nav-link " href="{% url 'add_course' %}">Add Course</a>
+            </li> 
+            <li class="nav-item ">
+              <a class="nav-link " href="{% url 'add_student' %}">Add Student</a>
+            </li> 
+             <li class="nav-item ">
+              <a class="nav-link " href="{% url 'show_details' %}">Show Student Details</a>
+            </li> 
+            <li class="nav-item ">
+              <a class="nav-link " href="{% url 'show_teacher' %}">Show Teacher Details</a>
+            </li>  
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'admin_logout' %}">Logout</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
+    <form action="{% url 'edit_details' students.id %}" method="post">
+        {% csrf_token %}
+        <center>
+            <br><br><br>
+            <center><h1 style="color:red";>Edit Student Details</h1></center>
+    <table>
+        <tr>
+            <td><label>Student Name</label></td>
+            <td><input type="text" name="sname" value="{{students.student_name}}"></td>
+        </tr>
+        <tr>
+            <td><label>Address</label></td>
+            <td><input type="text" name="address" value="{{students.student_address}}"></td>
+        </tr>
+        <tr>
+            <td><label>Age</label></td>
+            <td><input type="text" name="age" value="{{students.student_age}}"></td>
+        </tr>
+        
+        <tr>
+            <td><label>Joining Date</label></td>
+            <td><input type="date" name="jdate" value="{{students.joining_date|date:'y-m-d'}}"></td>
+        </tr>
+        <tr>
+            <td><label>Course</td>
+            <td>
+                <select class="form-control" name="sel">
+                    {% for course in courses %}
+                    <option value="{{course.id}}">{{course.course_name}}</option>
+                    {% endfor %}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+            </td>
+            <td><input type="submit" value="Update"></td>
+
+        </tr>
+    </table>
+</center>
+</form>
+</body>
+</html>
