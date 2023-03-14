@@ -8,7 +8,7 @@ class Student(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE,null=True)
     student_name=models.CharField(max_length=255)
     student_address=models.CharField(max_length=255)
-    student_age=models.IntegerField()
+    student_age=models.IntegerField(default=0)
     joining_date=models.DateField()
     
 class Usermember(models.Model):

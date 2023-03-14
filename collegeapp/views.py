@@ -26,10 +26,11 @@ def admin_login(request):
         else:
             messages.info(request,"Invalid username or password")
             return redirect('/')
-        return render(request,'index.html')
+    return render(request,'index.html')
     
 def admin_home(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_staff:
+        print(request.user.id)
         return render(request,'admin/admin_home.html')
     return render(request,'index.html')
     
@@ -136,6 +137,7 @@ def add_teacherdb(request):
                 user=User.objects.create_user(first_name=fname,last_name=lname,username=uname,password=password,email=email)
                 user.save()
                 u=User.objects.get(id=user.id)
+            
                 member=Usermember(address=address,age=age,number=number,image=image,user=u,course=course1)
                 member.save()
                 # messages.info(request, 'You have successfully registered')
@@ -156,23 +158,25 @@ def user_home(request):
 
 def edit(request):
     if request.user.is_authenticated:
-        current_user = request.user
-        print (current_user.id)
+        current_user = request.user.id
+        print (current_user)
         user1=Usermember.objects.get(user_id=current_user)
+        user2=User.objects.get(id=current_user)
         if request.method=="POST":
             if len(request.FILES)!=0:
                 if len(user1.image)>0:
                     os.remove(user1.image.path)
                 user1.image=request.FILES.get('file')
-            user1.user.first_name=request.POST.get('fname')
-            user1.user.last_name=request.POST.get('lname')
-            user1.user.username=request.POST.get('uname')
-            user1.user.password=request.POST.get('password')
-            user1.user.email=request.POST.get('email')
+            user2.first_name=request.POST.get('fname')
+            user2.last_name=request.POST.get('lname')
+            user2.username=request.POST.get('uname')
+            user2.password=request.POST.get('password')
+            user2.email=request.POST.get('email')
             user1.age=request.POST.get('age')
             user1.address=request.POST.get('address')
             user1.number=request.POST.get('number')
             user1.save()
+            user2.save()
             return redirect('profile')
         
         return render(request,'user/user_edit.html',{'users':user1})
