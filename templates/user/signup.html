@@ -34,7 +34,7 @@
                 <div class="card-body p-5 text-center">
 
                   <form method="post" action="{% url 'add_teacherdb' %}" enctype="multipart/form-data"> 
-                    <form>
+                    
                     {% csrf_token %}
                   <h3 class="mb-5">Teacher Registration</h3>
                   <div class="col-md-12">
@@ -101,7 +101,7 @@
                           {% for c in course %}
                           <option value="{{c.id}}">{{c.course_name}}</option>
                           {% endfor %}
-                          
+                      </select>
                     </div> 
                   
                   

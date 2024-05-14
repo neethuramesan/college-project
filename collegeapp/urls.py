@@ -19,6 +19,8 @@ urlpatterns = [
     path('edit',views.edit,name="edit"),
     path('profile',views.profile,name="profile"),
     path('show_teacher',views.show_teacher,name="show_teacher"),
-    path('delete/<int:pk>',views.delete,name="delete")
+    path('delete/<int:pk>',views.delete,name="delete"),
+    path('depent_dropdown',views.depent_dropdown,name='depent_dropdown'),
+ 
 ]
 

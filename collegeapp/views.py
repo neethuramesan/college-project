@@ -2,7 +2,8 @@ from fnmatch import fnmatchcase
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import login,logout
+from django.http import HttpResponse
 from collegeapp.models import Course,Student,Usermember
 import os
 # Create your views here.
@@ -136,9 +137,9 @@ def add_teacherdb(request):
             else:
                 user=User.objects.create_user(first_name=fname,last_name=lname,username=uname,password=password,email=email)
                 user.save()
-                u=User.objects.get(id=user.id)
+                
             
-                member=Usermember(address=address,age=age,number=number,image=image,user=u,course=course1)
+                member=Usermember(address=address,age=age,number=number,image=image,user=user, course=course1)
                 member.save()
                 # messages.info(request, 'You have successfully registered')
                 return redirect('/')
@@ -184,14 +185,14 @@ def edit(request):
 
 def profile(request):
     if request.user.is_authenticated:
-        current_user = request.user
-        print (current_user.id)
+        current_user = request.user.id
+        
         user1=Usermember.objects.get(user_id=current_user)
         return render(request,'user/profile.html',{'users':user1})
     
 def show_teacher(request):
     if request.user.is_authenticated:
-        user1=Usermember.objects.all
+        user1=Usermember.objects.all()
         return render(request,'admin/show_teacher.html',{'user':user1})
     return redirect('/')
 
@@ -202,3 +203,12 @@ def delete(request,pk):
     user.delete()
     user.user.delete()
     return redirect("show_teacher")  
+
+def depent_dropdown(request):
+    courses=Course.objects.all()
+    student=Student.objects.all()
+    teacher=Usermember.objects.all()
+    return render(request,'depend_dropdown.html',{'course':courses,'student':student,'teacher':teacher})
+
+
+  
